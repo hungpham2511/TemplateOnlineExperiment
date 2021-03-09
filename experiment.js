@@ -3,37 +3,28 @@
 // Authenticate github using Octokit (https://octokit.github.io/rest.js/v18/)
 import { Octokit } from "https://cdn.skypack.dev/@octokit/rest"
 
-// returns Octokit authentication promise
-const authenticatedOctokit =
-    fetch(".netlify/functions/api") // fetching gh token from netlify server function
-        .then(response => response.json())
-        .then((json) =>
-            new Octokit({
-                auth: json.auth, // authenticating Octokit
-            })
-        )
-
-// Commit info
-const REPO_NAME = "TemplateOnlineExperiment"
-const REPO_OWNER = "RealityBending" // update this to use "RealityBending"
-const AUTHOR_EMAIL = "phamttam17@gmail.com" // update this to committer/author email
-
 function commitToRepo(jsonData, path) {
-    // commits a new file in defined repo
-    authenticatedOctokit
-        .then(octokit => { // "then" makes sure that this runs *after* octokit is authenticated
-            octokit.repos.createOrUpdateFileContents({
-                owner: REPO_OWNER,
-                repo: REPO_NAME,
-                path: `${path}`, // path in repo -- saves to 'results' folder as '<participant_id>.json'
-                message: `Saving ${path}`, // commit message
-                content: btoa(jsonData), // octokit requires base64 encoding for the content; this just encodes the json string
-                "committer.name": REPO_OWNER,
-                "committer.email": AUTHOR_EMAIL,
-                "author.name": REPO_OWNER,
-                "author.email": "hungpham2511@gmail.com",
-            })
-        })
+    // const url = "https://blissful-kowalevski-37a447.netlify.app/.netlify/functions/api"
+    const url = ".netlify/functions/api"
+
+    // Example: 
+    const response = fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'no-cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify({
+            path: path,
+            data: JSON.stringify(jsonData)
+        }) // body data type must match "Content-Type" header
+    }).then((response) => {
+        console.log(response)
+    });
 }
 
 
