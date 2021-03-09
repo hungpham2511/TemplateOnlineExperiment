@@ -15,7 +15,6 @@ exports.handler = async (event, context) => {
     // content should be a dictionary with two attributes: 'path' and 'data'
     const content = JSON.parse(event.body);
     console.log(content)
-
     // authenticating with Octokit
     const octokit = new Octokit({
         auth: process.env.GH_OAUTH
@@ -38,7 +37,6 @@ exports.handler = async (event, context) => {
             email: AUTHOR_EMAIL,
         }
     })
-
     if (response.status == 200 || response.status == 201){
         return {
             statusCode: 200,
