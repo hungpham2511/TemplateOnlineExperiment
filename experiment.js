@@ -1,8 +1,5 @@
 /* SAVING DATA FUNCTION ================== */
 
-// Authenticate github using Octokit (https://octokit.github.io/rest.js/v18/)
-import { Octokit } from "https://cdn.skypack.dev/@octokit/rest"
-
 function commitToRepo(jsonData, path) {
     // const url = "https://blissful-kowalevski-37a447.netlify.app/.netlify/functions/api"
     const url = ".netlify/functions/api"
@@ -26,6 +23,15 @@ function commitToRepo(jsonData, path) {
         console.log(response)
     });
 }
+
+// How to use this commitToRepo to create file.
+// This call below will create a new file and store it at data/123-tam-pham.json
+// commitToRepo(
+//     {
+//         test: "abc",
+//         participant: "Tam"
+//     },
+//     "data/123-tam-pham.json")
 
 
 /* INFO ================== */
